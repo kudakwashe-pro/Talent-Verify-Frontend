@@ -3,12 +3,21 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
+    "@emotion/react": "^11.13.0",
+    "@emotion/styled": "^11.13.0",
+    "@glideapps/glide-data-grid": "^6.0.3",
+    "@mui/icons-material": "^5.16.4",
+    "@mui/material": "^5.16.7",
+    "lodash": "^4.17.21",
     "react": "^18.2.0",
+    "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18.2.0",
+    "react-resizable": "^3.0.5",
+    "react-resplit": "^1.3.1",
+    "react-router-dom": "^6.24.1",
     "react-scripts": "5.0.1",
+    "resizable-panels-react": "^2.0.8",
+    "split-pane-react": "^0.1.3",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -23,6 +32,10 @@
       "react-app/jest"
     ]
   },
+  "externals": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -34,5 +47,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "electron": "^31.4.0"
   }
 }
