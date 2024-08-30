@@ -11,7 +11,8 @@ import {
   IconButton,
   FormLabel,
   ListItem,
-  List
+  List,
+  useTheme
 } from '@mui/material'
 import {EditNote, PersonOutlined, Settings, VerifiedUser } from '@mui/icons-material'
 
@@ -34,7 +35,8 @@ const TabPanel = ({ children, value, index }) => {
 
 const CustomTabs = ({ header, tabs }) => {
   const [value, setValue] = useState(0)
-
+  const theme = useTheme();
+  
   const handleChange = (event, newValue) => {
     setValue(newValue)
   }
@@ -46,7 +48,7 @@ const CustomTabs = ({ header, tabs }) => {
         sx={{
           display: 'flex',
           alignItems: 'center',
-          backgroundColor: '#FFFFFFDC'
+          backgroundColor: theme.palette.mode === 'dark' ? '' :'#FFFFFFDC'
         }}
       >
         {header && (
@@ -54,7 +56,7 @@ const CustomTabs = ({ header, tabs }) => {
             variant='h6'
             sx={{
               flexGrow: 1,
-              border: '1px solid #E2DEDE',
+              border: theme.palette.mode === 'dark' ? '1px solid' : '1px solid #E2DEDE',
               textIndent: 20,
               fontWeight: 'bold'
             }}
@@ -64,8 +66,8 @@ const CustomTabs = ({ header, tabs }) => {
         )}
       </Box>
       <Box
-      className="theme1"
         sx={{
+          background: theme.palette.mode === 'dark' ? '' :  'linear-gradient(90deg,#ddf1f1,#e6faf7, #eadcee)',
           display: 'flex',
           alignItems: 'center',
         }}
@@ -75,15 +77,15 @@ const CustomTabs = ({ header, tabs }) => {
             <Grid item xs={12} md={4}>
               <Card
                 sx={{
-                  borderRight: '1px solid #E2DEDE',
+                  borderRight:theme.palette.mode === 'dark' ? '1px solid' : '1px solid #E2DEDE',
                   borderRadius: '0',
-                  backgroundColor: 'unset',
+                  backgroundColor: theme.palette.mode === 'dark' ? '' : 'unset',
                 }}
                 variant='none'
               >
                 <Grid container spacing={3} sx={{ mb: 1}}>
                   <Grid sx={{ml:1, mt:1}} item xs={12} md={1}>
-                    <Avatar sx={{borderRadius:'25px',bgcolor:'gray',width:'35px',height:'35px'}} >
+                    <Avatar sx={{borderRadius:'15px',bgcolor:theme.palette.mode === 'dark' ? 'white' :'gray',width:'35px',height:'35px'}} >
                       <PersonOutlined  />
                     </Avatar>
                   </Grid>
@@ -93,7 +95,7 @@ const CustomTabs = ({ header, tabs }) => {
                     <FormLabel sx={{fontFamily:'cursive',fontSize:'1.2ex'}} >Kadakwashe Makorokoto </FormLabel>
                     </ListItem>
                     <FormLabel sx={{fontFamily:'cursive',fontSize:'1.2ex',ml:2}} >Account State </FormLabel>
-                    <VerifiedUser sx={{color:'#98C1DD',height:'18px'}}/>
+                    <VerifiedUser sx={{color:theme.palette.mode === 'dark' ? '' :'#98C1DD',height:'18px'}}/>
                     </List>
                   </Grid>
 
@@ -109,11 +111,12 @@ const CustomTabs = ({ header, tabs }) => {
             <Grid item xs={12} md={4}>
               <Card 
               sx={{
-                  borderRight: '1px solid #E2DEDE',
+                  borderRight:theme.palette.mode === 'dark' ? '1px solid' : '1px solid #E2DEDE',
                   borderRadius: '0',
-                  backgroundColor: 'unset',
+                  backgroundColor: theme.palette.mode === 'dark' ? '' : 'unset',
                 }}
-                variant='none'><Grid sx={{ml:1, mt:3}} item xs={12} md={1}>
+                variant='none'>
+                  <Grid sx={{ml:1, mt:3}} item xs={12} md={1}>
               </Grid></Card>
             </Grid>
             
@@ -121,7 +124,7 @@ const CustomTabs = ({ header, tabs }) => {
               <Card
                 sx={{
                   borderRadius: '0',
-                  backgroundColor: 'unset',
+                  backgroundColor: theme.palette.mode === 'dark' ? '' : 'unset',
                 }}
                 variant='none'
               >
@@ -145,8 +148,7 @@ const CustomTabs = ({ header, tabs }) => {
       <AppBar
         variant='none'
         position='sticky'
-        className='theme1'
-        sx={{top: '70px' }}
+        sx={{ background: theme.palette.mode === 'dark' ? '' :  'linear-gradient(90deg,#ddf1f1,#e6faf7, #eadcee)',top: '70px' }}
       >
         <Tabs
           value={value}
@@ -160,15 +162,15 @@ const CustomTabs = ({ header, tabs }) => {
               label={tab.label}
               key={index}
               sx={{
-                color: value === index ? '#1E1F1FBE' : 'gray',
+                color: value === index ? theme.palette.mode === 'dark' ? '' :'#1E1F1FBE' : theme.palette.mode === 'dark' ? '' :'gray',
                 fontWeight: value === index ? 'bold' : 'normal',
-                borderLeft: value === index ? '1px solid #B3B0B0' : 'none',
-                borderRight: value === index ? '1px solid #B3B0B0' : 'none',
-                borderTop: value === index ? '1px solid orange' : 'none',
+                borderLeft: value === index ? theme.palette.mode === 'dark' ? '' : '1px solid #B3B0B0' : theme.palette.mode === 'dark' ? '' : 'none',
+                borderRight: value === index ? theme.palette.mode === 'dark' ? '' : '1px solid #B3B0B0' : theme.palette.mode === 'dark' ? '' : 'none',
+                borderTop: value === index ? '1px solid orange' : theme.palette.mode === 'dark' ? '' : theme.palette.mode === 'dark' ? '' : 'none',
                 borderRadius: value === index ? '32px' : '2px',
                 fontSize: '1.3ex',
-                borderBottom: value === index ? 'none' : '1px solid #B3B0B0',
-                backgroundColor: value === index ? 'white' : '#F4F7F7'
+                borderBottom: value === index ? 'none' : theme.palette.mode === 'dark' ? '1px solid' : '1px solid #B3B0B0',
+                backgroundColor: value === index ?theme.palette.mode === 'dark' ? '' : 'white' : theme.palette.mode === 'dark' ? '': '#FCFCFC'
               }}
             />
           ))}

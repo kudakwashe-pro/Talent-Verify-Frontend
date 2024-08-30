@@ -14,9 +14,9 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import { ExpandLess, ExpandMore, Verified } from '@mui/icons-material';
+import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import Collapse from '@mui/material/Collapse';
-
+import { useTheme } from '@mui/material/styles';
 const drawerWidth = 180;
 
 const openedMixin = (theme) => ({
@@ -43,6 +43,7 @@ const closedMixin = (theme) => ({
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
+  height:'30px',
   justifyContent: 'flex-end',
   padding: theme.spacing(0, 1),
   ...theme.mixins.toolbar,
@@ -86,6 +87,7 @@ const Drawer = styled(MuiDrawer, {
 const MiniVariantDrawer = ({ items, title }) => {
   const [open, setOpen] = React.useState(false);
   const [nestedStates, setNestedStates] = React.useState({});
+  const theme = useTheme();
 
   const handleDrawerOpen = () => setOpen(true);
   const handleDrawerClose = () => setOpen(false);
@@ -99,8 +101,8 @@ const MiniVariantDrawer = ({ items, title }) => {
 
   return (
     <Box  sx={{ display: 'flex' }}>
-      <AppBar variant='none' sx={{backgroundColor: '#F9FAF9DC',color:'black' }} position="fixed" open={open}>
-        <Toolbar>
+      <AppBar variant='standard' sx={{ backgroundColor: theme.palette.mode === 'dark' ? '' :'#FFFFFFAF',color:theme.palette.mode === 'dark' ? '' :'black' }} position="fixed" open={open}>
+        <Toolbar  variant='dense'>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -108,14 +110,14 @@ const MiniVariantDrawer = ({ items, title }) => {
             edge="start"
             sx={{ marginRight: 5, ...(open && { display: 'none' }) }}
           >
-            <MenuIcon sx={{ backgroundColor: '#EAEDEE'}} />
+            <MenuIcon sx={{ backgroundColor: theme.palette.mode === 'dark' ? '' :'#EAEDEE'}} />
           </IconButton>
-          <Verified className='AppIcon' sx={{color:"#4caf50", position:'absolute',left:250,top:8,zIndex:1}}/>
+
           <Typography sx={{fontWeight:'bold',fontSize:'1.7ex'}} variant="h6" noWrap component="div">{title}</Typography>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
-        <DrawerHeader >
+        <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
             <ChevronLeftIcon />
           </IconButton>
@@ -127,17 +129,17 @@ const MiniVariantDrawer = ({ items, title }) => {
               <ListItem disablePadding>
                 <ListItemButton divider onClick={nestedItems ? () => toggleNested(index) : onClick}>
                   <ListItemIcon>{icon}</ListItemIcon>
-                  <ListItemText primary={text} sx={{'.MuiListItemText-primary': { color: 'black',fontSize:'1.7ex'}} }/>
+                  <ListItemText primary={text} sx={{'.MuiListItemText-primary': { color: theme.palette.mode === 'dark' ? '' :'black',fontSize:'1.7ex'}} }/>
                   {nestedItems && (nestedStates[index] ? <ExpandLess /> : <ExpandMore />)}
                 </ListItemButton>
               </ListItem>
               {nestedItems && (
                 <Collapse in={nestedStates[index]} timeout='auto' unmountOnExit>
-                  <List sx={{backgroundColor:'#EBF7EBDC'}} component="div" disablePadding>
+                  <List sx={{backgroundColor:theme.palette.mode === 'dark' ? '' :'#EBF7EBDC'}} component="div" disablePadding>
                     {nestedItems.map(({ nestedText, nestedOnClick,nestedIcons }, nestedIndex) => (
                       <ListItemButton key={nestedText} sx={{ pl: 4 }} onClick={nestedOnClick}>
                         <ListItemIcon>{nestedIcons}</ListItemIcon>
-                        <ListItemText primary={nestedText} sx={{'.MuiListItemText-primary': { color: 'black',fontSize:'1.7ex'}} }/>
+                        <ListItemText primary={nestedText} sx={{'.MuiListItemText-primary': { color: theme.palette.mode === 'dark' ? '' :'black',fontSize:'1.7ex'}} }/>
                       </ListItemButton>
                     ))}
                   </List>

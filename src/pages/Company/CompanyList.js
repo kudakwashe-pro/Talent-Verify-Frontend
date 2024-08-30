@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { deleteEmployee, fetchEmployees, updateEmployee } from '../../api'
 import {
   Box,
   Button,
@@ -18,28 +17,29 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import SaveIcon from '@mui/icons-material/Save'
 import ChildTabs from '../../components/childTabs'
-import EmployeeForm from './EmployeeForm'
 import { useTheme } from '@emotion/react'
 import StripedGrid from '../../components/DataGrid'
 import { Bounce, ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import axios from 'axios'
+import { deleteCompanies, fetchCompanies, updateCompanies } from '../../api'
+import CompanyForm from './CompanyForm'
 
-const EmployeeListPage = () => {
-  const [employees, setEmployees] = useState([])
+const CompaniesListPage = () => {
+  const [companies, setCompanies] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
   const [openDialog, setOpenDialog] = useState(false)
-  const [editingEmployee, setEditingEmployee] = useState(null)
+  const [editingCompany, setEditingCompany] = useState(null)
 
   useEffect(() => {
-    const getEmployees = async accessToken => {
+    const getCompany = async accessToken => {
       const newTimer = setTimeout(async () => {
-        const response = await fetchEmployees(accessToken);
-        setEmployees(response.data)
+        const response = await fetchCompanies(accessToken)
+        setCompanies(response.data)
       }, 500)
       return () => clearTimeout(newTimer)
     }
-    getEmployees(localStorage.getItem('accessToken'))
+    getCompany(localStorage.getItem('accessToken'))
   })
 
   const notifyStatusSuccess = status => {
@@ -70,39 +70,37 @@ const EmployeeListPage = () => {
   }
 
   const handleDelete = async id => {
-    setEmployees(employees.filter(employee => employee.id !== id))
+    setCompanies(companies.filter(company => company.id !== id))
     try {
-      const response = await deleteEmployee(id)
+      const response = await deleteCompanies(id)
       if (response.status === 200) {
-        notifyStatusSuccess('Employee Deleted successfully')
+        notifyStatusSuccess('Company Deleted successfully')
       } else if (response.status === axios.HttpStatusCode.Unauthorized) {
-        window.location.href ='/login'
+        window.location.href = '/'
       } else {
         notifyStatusError('Error Occurred While Deletion')
       }
     } catch (error) {
       notifyStatusError('Error Occurred While Updating: ' + error)
     }
-    
-
   }
 
-  const handleEdit = employee => {
-    setEditingEmployee(employee)
+  const handleEdit = companies => {
+    setEditingCompany(companies)
     setOpenDialog(true)
   }
 
   const handleSave = async () => {
-    if (editingEmployee.id) {
+    if (editingCompany.id) {
       try {
-        const response = await updateEmployee(
-          editingEmployee.id,
-          editingEmployee
+        const response = await updateCompanies(
+          editingCompany.id,
+          editingCompany
         )
         if (response.status === 200) {
-          notifyStatusSuccess('Employee updated successfully')
+          notifyStatusSuccess('Company updated successfully')
         } else if (response.status === axios.HttpStatusCode.Unauthorized) {
-          window.location.href ='/login'
+          window.location.href = '/'
         } else {
           notifyStatusError('Error Occurred While Updating')
         }
@@ -110,17 +108,17 @@ const EmployeeListPage = () => {
         notifyStatusError('Error Occurred While Updating: ' + error)
       }
 
-      setEmployees(
-        employees.map(emp =>
-          emp.id === editingEmployee.id ? editingEmployee : emp
+      setCompanies(
+        companies.map(emp =>
+          emp.id === editingCompany.id ? editingCompany : emp
         )
       )
     } else {
-      setEmployees([
-        ...employees,
-        { ...editingEmployee, id: employees.length + 1 }
+      setCompanies([
+        ...companies,
+        { ...editingCompany, id: companies.length + 1 }
       ])
-      const response = await updateEmployee(editingEmployee)
+      const response = await updateCompanies(editingCompany)
       if (response.status === 200) {
         alert(response.status)
       }
@@ -128,25 +126,51 @@ const EmployeeListPage = () => {
     setOpenDialog(false)
   }
 
-  const filteredEmployees = employees.filter(employee =>
-    employee.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredCompanies = companies.filter(company =>
+    company.name.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
   const columns = [
     { field: 'id', headerName: '', width: 30 },
-    { field: 'employee_id', headerName: 'ID', width: 60, editable: true },
-    { field: 'company', headerName: 'Company', width: 130, editable: true },
-    { field: 'name', headerName: 'Name', width: 180, editable: true },
+    { field: 'name', headerName: 'Name', width: 120, editable: true },
     {
-      field: 'department',
-      headerName: 'Department',
+      field: 'registration_date',
+      headerName: 'Reg Date',
+      width: 130,
+      editable: true
+    },
+    {
+      field: 'registration_number',
+      headerName: 'Reg No.',
       width: 100,
       editable: true
     },
-    { field: 'role', headerName: 'Role', width: 100, editable: true },
-    { field: 'date_started', headerName: 'Date Started', width: 100 },
-    { field: 'date_left', headerName: 'Date Left', width: 100, editable: true },
-    { field: 'duties', headerName: 'Duties', width: 120, editable: true },
+    {
+      field: 'address',
+      headerName: 'Address',
+      width: 180,
+      editable: true
+    },
+    {
+      field: 'contact_person',
+      headerName: 'Contact Person',
+      width: 100,
+      editable: true
+    },
+    { field: 'departments', headerName: 'Departments', width: 100 },
+    {
+      field: 'number_of_employees',
+      headerName: 'No.Employees',
+      width: 60,
+      editable: true
+    },
+    {
+      field: 'contact_phone',
+      headerName: 'Contact Phone',
+      width: 100,
+      editable: true
+    },
+    { field: 'email', headerName: 'Email', width: 100, editable: true },
     {
       field: 'actions',
       headerName: 'Actions',
@@ -207,31 +231,37 @@ const EmployeeListPage = () => {
         getRowId={row => row.id}
         getRowSpacing={() => ({ top: 5, bottom: 5 })}
         columns={columns}
-        rows={filteredEmployees}
+        rows={filteredCompanies}
         onCellClick={params => alert(params.id)}
       />
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
         <DialogTitle>
-          {editingEmployee?.id ? 'Edit Employee' : 'Add New Employee'}
+          {editingCompany?.id ? 'Edit Company' : 'Add New Company'}
         </DialogTitle>
         <DialogContent>
-          {Object.keys(editingEmployee || {}).map(key => (
+          {Object.keys(editingCompany || {}).map(key => (
             <TextField
               key={key}
               label={key.replace('_', ' ').toUpperCase()}
               fullWidth
+              required
               type={
-                String(key.replace('_', ' ').toUpperCase()) === 'DATE STARTED'
+                String(key.replace('_', ' ').toUpperCase()) === 'REGISTRATION DATE'
                   ? 'date'
-                  : String(key.replace('_', ' ').toUpperCase()) === 'DATE LEFT'
-                  ? 'date'
-                  : ''
+                  : String(key.replace('_', ' ').toUpperCase()) === 'EMAIL'
+                  ? 'email'
+                  : String(key.replace('_', ' ').toUpperCase()) === 'CONTACT PHONE'
+                  ? "tel"
+                  : String(key.replace('_', ' ').toUpperCase()) === 'NUMBER OF_EMPLOYEES'
+                  ? "number"
+                  :''
+
               }
               margin='dense'
-              value={editingEmployee[key] || ''}
+              value={editingCompany[key] || ''}
               onChange={e =>
-                setEditingEmployee({
-                  ...editingEmployee,
+                setEditingCompany({
+                  ...editingCompany,
                   [key]: e.target.value
                 })
               }
@@ -265,16 +295,16 @@ const EmployeeListPage = () => {
 const tabs = [
   {
     label: 'Record List',
-    content: <EmployeeListPage />
+    content: <CompaniesListPage />
   },
   {
-    label: 'Employees Form',
-    content: <EmployeeForm onCompanyCreated={() => alert('Company created!')} />
+    label: 'Company Form',
+    content: <CompanyForm onCompanyCreated={() => alert('Company created!')} />
   }
 ]
 
-const EmployeeList = () => {
+const CompanyList = () => {
   return <ChildTabs tabs={tabs} />
 }
 
-export default EmployeeList
+export default CompanyList
